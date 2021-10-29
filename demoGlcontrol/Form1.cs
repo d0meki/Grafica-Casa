@@ -7,7 +7,7 @@ namespace demoGlcontrol
 {
     public partial class Form1 : Form
     {
-        Casa casa = new Casa(new Vector3(0,0,0),5,8,5);
+        Escenario stage = new Escenario();
         GLControl miglControl;
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -27,6 +27,7 @@ namespace demoGlcontrol
         public Form1()
         {
             InitializeComponent();
+            stage.agregarObjeto("casa", new Casa(new Vector3(-5, 0f, 0f), 30f, 20f, 30f));
         }
 
         public void renderCanvas_Paint(object sender, PaintEventArgs e)
@@ -34,7 +35,7 @@ namespace demoGlcontrol
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            casa.dibujar();
+            stage.dibujarEscenario();
 
             miglControl.SwapBuffers();
         }
@@ -60,9 +61,9 @@ namespace demoGlcontrol
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
 
-            GL.Ortho(-10.0, 10.0, -10.0, 10.0, 10.0, -10.0);
+           // GL.Ortho(-10.0, 10.0, -10.0, 10.0, 10.0, -10.0);
             // GL.Ortho(-50.0, 50.0, -50.0, 50.0, -100.0, 100.0);
-
+            GL.Ortho(-30.0, 30.0, -30.0, 30.0, 30.0, -30.0);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.Viewport(0, 0, w, h);
             GL.End();

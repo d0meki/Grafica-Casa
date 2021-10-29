@@ -9,144 +9,26 @@ using System.Threading.Tasks;
 
 namespace demoGlcontrol
 {
-    class Casa
+    class Casa: Objeto
     {
-
-
-        private float ancho;
-        private float largo;
-        private float alto;
-        private Vector3 pos;
-        private Vector3 trasladar;
-        //public float angulo = 0;
-        public Casa(Vector3 posicion, float ancho, float largo, float alto) {
-
-            this.trasladar = new Vector3(0, 0, 0);
-            this.pos = posicion;
-            this.ancho = ancho;
-            this.largo = largo;
-            this.alto = alto;
-        }
-        public void dibujar()
-        {
-            GL.LoadIdentity();
-
-            GL.PushMatrix();
-            GL.Translate(this.trasladar);
-            // GL.Rotate(angulo, 0, 1, 0);
-            GL.Rotate(90, 0, 1, 0);
-            casa();
-           // angulo++;
-            GL.PopMatrix();
+        public Casa(Vector3 posicion, float ancho, float alto, float largo) {
+            float lar;
+            if (ancho > largo)
+            {
+                lar = ancho;
+            }
+            else
+            {
+                lar = largo;
+            }
+            this.listaDeFaces().Add("techo", new Face(posicion, ancho, largo, alto * 0.1f, new Vector3(234 / 255.0f, 205 / 255.0f, 143 / 255.0f)));
+            this.listaDeFaces().Add("techo1", new Face(new Vector3(posicion.X+largo*0.15f, posicion.Y + alto * 0.1f, posicion.Z), ancho,largo * 0.7f, alto * 0.1f, new Vector3(234 / 255.0f, 205 / 255.0f, 143 / 255.0f)));
+            this.listaDeFaces().Add("techo2", new Face(new Vector3(posicion.X + largo * 0.3f, posicion.Y + alto * 0.2f, posicion.Z), ancho, largo * 0.4f, alto * 0.1f, new Vector3(234 / 255.0f, 205 / 255.0f, 143 / 255.0f)));
+            this.listaDeFaces().Add("techo3", new Face(new Vector3(posicion.X + largo * 0.4f, posicion.Y + alto * 0.3f, posicion.Z), ancho, largo * 0.2f, alto * 0.1f, new Vector3(234 / 255.0f, 205 / 255.0f, 143 / 255.0f)));
+            this.listaDeFaces().Add("base",new Face(new Vector3(posicion.X + largo * 0.1f, posicion.Y - alto *0.1f, posicion.Z - ancho * 10 / 100),ancho,largo*0.8f,alto, new Vector3(188 / 255.0f, 129 / 255.0f, 80 / 255.0f)));
+            this.listaDeFaces().Add("puerta",new Face(new Vector3(posicion.X + largo * 0.2f, posicion.Y - alto * 0.5f, posicion.Z - ancho * 0.1f), ancho*0.5f, largo * 0.15f, alto*0.6f, new Vector3(1, 0, 0)));
+            this.listaDeFaces().Add("ventana", new Face(new Vector3(posicion.X + largo * 0.6f, posicion.Y - alto * 0.4f, posicion.Z - ancho * 0.1f), ancho * 0.5f, largo * 0.15f, alto * 0.3f, new Vector3(0, 1, 0)));
         }
 
-
-        public void casa()
-        {
-
-            GL.Begin(PrimitiveType.Triangles);
-            GL.Color3(188 / 255.0f, 129 / 255.0f, 80 / 255.0f);
-            //TECHO DE LA CASA FRONTAL
-            GL.Vertex3(pos.X, pos.Y + alto, pos.Z-alto/2);
-            GL.Vertex3(pos.X, pos.Y, pos.Z);
-            GL.Vertex3(pos.X+largo, pos.Y + alto, pos.Z - alto / 2);
-
-            GL.Vertex3(pos.X, pos.Y, pos.Z);
-            GL.Vertex3(pos.X + largo, pos.Y + alto, pos.Z - alto / 2);
-            GL.Vertex3(pos.X+largo, pos.Y, pos.Z);
-            
-            //TECHO DE LA CASA TRASERA
-            GL.Vertex3(pos.X, pos.Y + alto, pos.Z - alto / 2);
-            GL.Vertex3(pos.X, pos.Y, pos.Z-ancho);
-            GL.Vertex3(pos.X+largo, pos.Y+alto, pos.Z - alto / 2);
-
-            GL.Vertex3(pos.X, pos.Y, pos.Z - ancho);
-            GL.Vertex3(pos.X + largo, pos.Y + alto, pos.Z - alto / 2);
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z - ancho);
-            GL.Color3(234 / 255.0f, 205 / 255.0f, 143 / 255.0f);
-            
-            //TECHO DE LA CASA CARA IZQUIERDA
-            GL.Vertex3(pos.X, pos.Y + alto, pos.Z - alto / 2);
-            GL.Vertex3(pos.X, pos.Y, pos.Z);
-            GL.Vertex3(pos.X, pos.Y, pos.Z - ancho);
-            //TECHO DE LA CASA CARA DERECHA
-            GL.Vertex3(pos.X+largo, pos.Y + alto, pos.Z - alto / 2);
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z);
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z-ancho);
-
-            //PUERTA
-            GL.Color3(143 / 255.0f, 105 / 255.0f, 39 / 255.0f);
-            GL.Vertex3(pos.X + ancho / 3, pos.Y - alto / 2, pos.Z);
-            GL.Vertex3(pos.X + ancho / 3, pos.Y - alto, pos.Z);
-            GL.Vertex3(pos.X + ancho / 6, pos.Y - alto / 2, pos.Z);
-
-            GL.Vertex3(pos.X + ancho / 3, pos.Y - alto, pos.Z);
-            GL.Vertex3(pos.X + ancho / 6, pos.Y - alto / 2, pos.Z);
-            GL.Vertex3(pos.X + ancho / 6, pos.Y - alto, pos.Z);
-
-
-            //BASE DE LA CASA
-
-            //Cara Frontal
-            GL.Color3(93 / 255.0f, 109 / 255.0f, 126 / 255.0f);
-            GL.Vertex3(pos.X, pos.Y, pos.Z);//0,0,0
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z);//0,-5,0
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z);//8,0,0
-
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z);//0,-5,0
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z);//8,0,0
-            GL.Vertex3(pos.X + largo, pos.Y - alto, pos.Z);//,8,-5,0
-
-
-
-            //Cara de Atras
-            GL.Color3(231 / 255.0f, 76 / 255.0f, 60 / 255.0f);
-            GL.Vertex3(pos.X, pos.Y, pos.Z - ancho);
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z - ancho);
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z - ancho);
-
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z - ancho);
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z - ancho);
-            GL.Vertex3(pos.X + largo, pos.Y - alto, pos.Z - ancho);
-
-
-            //cara izquierda
-            GL.Color3(118 / 255.0f, 215 / 255.0f, 196 / 255.0f);
-            GL.Vertex3(pos.X, pos.Y, pos.Z);
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z);
-            GL.Vertex3(pos.X, pos.Y, pos.Z - ancho);
-
-            GL.Vertex3(pos.X, pos.Y, pos.Z - ancho);
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z);
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z - ancho);
-
-            //cara derecha
-            GL.Color3(244 / 255.0f, 208 / 255.0f, 63 / 255.0f);
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z);
-            GL.Vertex3(pos.X + largo, pos.Y - alto, pos.Z);
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z - ancho);
-
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z - ancho);
-            GL.Vertex3(pos.X + largo, pos.Y - alto, pos.Z);
-            GL.Vertex3(pos.X + largo, pos.Y - alto, pos.Z - ancho);
-            //cara superior
-            GL.Vertex3(pos.X, pos.Y, pos.Z - ancho);
-            GL.Vertex3(pos.X, pos.Y, pos.Z);
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z);
-
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z);
-            GL.Vertex3(pos.X, pos.Y, pos.Z - ancho);
-            GL.Vertex3(pos.X + largo, pos.Y, pos.Z - ancho);
-            //cara inferior
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z - ancho);
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z);
-            GL.Vertex3(pos.X + largo, pos.Y - alto, pos.Z);
-
-            GL.Vertex3(pos.X + largo, pos.Y - alto, pos.Z);
-            GL.Vertex3(pos.X, pos.Y - alto, pos.Z - ancho);
-            GL.Vertex3(pos.X + largo, pos.Y - alto, pos.Z - ancho);
-            GL.End();
-
-        }
     }
 }
